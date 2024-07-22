@@ -23,41 +23,15 @@ type RecurringInput struct {
 	Day      int `json:"day,omitempty"`
 }
 
-type RecurringOutput struct {
-	RRule       string         `json:"rRule"`
-	Occurrences []time.Time    `json:"occurrences"`
-	Recurring   RecurringInput `json:"recurring"`
-}
-
-func RecurringJSON(w http.ResponseWriter, r *http.Request) {
-	// Check if the request method is POST
-	if r.Method != http.MethodPost {
-		http.Error(w, "Only POST requests are allowed", http.StatusMethodNotAllowed)
-		return
-	}
-
-	// Decode the JSON request body
-	var input RecurringInput
-	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
-		http.Error(w, "Invalid JSON input", http.StatusBadRequest)
-		return
-	}
-
-	// Process the JSON input (you can add your logic here)
-	log.Printf("Received JSON: %+v\n", input)
-
-	// Create a new RRule Builder
-	set, _ := RuleSetGenerator(input)
-
-	recurringOutput := RecurringOutput{
-		RRule:       set.String(),
-		Occurrences: set.All(),
-		Recurring:   input}
-
-	// Send a response (optional)
-	//response := map[string]string{"message": "JSON received successfully"}
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(&recurringOutput)
+func (ri RecurringInput) MarshalJSON() ([]byte, error) {
+	type Alias RecurringInput
+	return json.Marshal(&struct {
+		Until string `json:"until,omitempty"`
+		*Alias
+	}{
+		Until: ri.Until.Format("2006-01-02"),
+		Alias: (*Alias)(&ri),
+	})
 }
 
 // RuleGenerator generates a RRule based on RecurringInput
@@ -142,4 +116,41 @@ func RuleSetGenerator(input RecurringInput) (rrule.Set, error) {
 	set.RRule(r)
 
 	return set, nil
+}
+
+type RecurringOutput struct {
+	RRule       string         `json:"rRule"`
+	Occurrences []time.Time    `json:"occurrences"`
+	Recurring   RecurringInput `json:"recurring"`
+}
+
+func RecurringJSON(w http.ResponseWriter, r *http.Request) {
+	// Check if the request method is POST
+	if r.Method != http.MethodPost {
+		http.Error(w, "Only POST requests are allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// Decode the JSON request body
+	var input RecurringInput
+	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
+		http.Error(w, "Invalid JSON input", http.StatusBadRequest)
+		return
+	}
+
+	// Process the JSON input (you can add your logic here)
+	log.Printf("Received JSON: %+v\n", input)
+
+	// Create a new RRule Builder
+	set, _ := RuleSetGenerator(input)
+
+	recurringOutput := RecurringOutput{
+		RRule:       set.String(),
+		Occurrences: set.All(),
+		Recurring:   input}
+
+	// Send a response (optional)
+	//response := map[string]string{"message": "JSON received successfully"}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(&recurringOutput)
 }
