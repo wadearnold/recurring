@@ -29,12 +29,12 @@ Recurring Daily; Repeat every 1 day(s); Run until it reaches 36 occurrences
     }
 ```
 
-Recurring Weekly; Repeat every 1 week(s) on FR ; Never stop;
+Recurring Weekly; Repeat every 2 week(s) on FR ; Never stop;
 ```json
   "recurring": {
     "frequency": "weekly",
     "WeekDays": ["FR"],
-    "interval": 1,
+    "interval": 2,
     }
 ```
 
