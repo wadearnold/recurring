@@ -139,7 +139,8 @@ func RecurringJSON(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Process the JSON input (you can add your logic here)
-	log.Printf("Received JSON: %+v\n", input)
+	b, _ := json.Marshal(input)
+	log.Printf("Received JSON: %s\n", string(b))
 
 	// Create a new RRule Builder
 	set, _ := RuleSetGenerator(input)
