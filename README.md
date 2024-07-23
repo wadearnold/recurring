@@ -47,3 +47,28 @@ Recurring Monthly; Repeat every 1 month(s) on the First; Run until: 2050-07-21
     }
 ```
 
+Research 
+
+RSchedule: a javascript recurring events library 
+https://medium.com/@john.carroll.p/rschedule-a-javascript-recurring-dates-library-36b4a279a4ca
+https://codesandbox.io/s/rschedule-starter-pxezu?fontsize=14&module=/src/index.ts&file=/src/index.ts
+https://gitlab.com/john.carroll.p/rschedule
+
+RRule 
+https://www.rfc-editor.org/rfc/rfc5545#section-3.3.10
+https://datatracker.ietf.org/doc/html/rfc5545
+
+Go implementations 
+https://github.com/efficap-energie/rrule-go
+https://github.com/teambition/rrule-go
+https://github.com/graham/rrule
+
+rrule.js 
+https://github.com/jkbrzt/rrule
+
+https://www.nylas.com/blog/create-recurring-events-using-rrule-dev/
+
+
+jQuery Recurring Rule 
+https://demo.mobiscroll.com/jquery/datetime/recurring-values#
+
